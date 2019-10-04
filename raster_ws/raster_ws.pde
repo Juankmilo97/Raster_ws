@@ -19,7 +19,7 @@ boolean gridHint = true;
 boolean debug = true;
 
 // 3. Use FX2D, JAVA2D, P2D or P3D
-String renderer = P3D;
+String renderer = P2D;
 
 // 4. Window dimension
 int dim = 10;
@@ -29,6 +29,7 @@ void settings() {
 }
 
 void setup() {
+  rectMode(CENTER);
   scene = new Scene(this);
   if (scene.is3D())
     scene.setType(Scene.Type.ORTHOGRAPHIC);
@@ -68,12 +69,10 @@ void draw() {
     scene.drawGrid(scene.radius(), (int)pow(2, n));
   if (triangleHint)
     drawTriangleHint();
-  pushMatrix();
-  pushStyle();
+  push();
   scene.applyTransformation(node);
   triangleRaster();
-  popStyle();
-  popMatrix();
+  pop();
 }
 
 // Implement this function to rasterize the triangle.
@@ -82,10 +81,11 @@ void triangleRaster() {
   // node.location converts points from world to node
   // here we convert v1 to illustrate the idea
   if (debug) {
-    pushStyle();
-    stroke(255, 255, 0, 125);
-    point(round(node.location(v1).x()), round(node.location(v1).y()));
-    popStyle();
+    push();
+    noStroke();
+    fill(255, 255, 0, 125);
+    square(round(node.location(v1).x()), round(node.location(v1).y()), 1);
+    pop();
   }
 }
 
@@ -98,7 +98,7 @@ void randomizeTriangle() {
 }
 
 void drawTriangleHint() {
-  pushStyle();
+  push();
   noFill();
   strokeWeight(2);
   stroke(255, 0, 0);
@@ -108,7 +108,7 @@ void drawTriangleHint() {
   point(v1.x(), v1.y());
   point(v2.x(), v2.y());
   point(v3.x(), v3.y());
-  popStyle();
+  pop();
 }
 
 void keyPressed() {
